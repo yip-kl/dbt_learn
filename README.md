@@ -30,6 +30,9 @@
 - Project structure
     - See [here](https://docs.getdbt.com/guides/best-practices/how-we-structure/1-guide-overview)
     - By default dbt materializes as Views, default materialization for different types of models can be defined in `dbt_project.yml`. Similarly `schema` can be defined to output the results to different locations. See [here](https://docs.getdbt.com/reference/model-configs)
+- Re-run from point of failure
+    - Rerun models associated with failed tests with this command `dbt build --select 1+result:fail+ --defer --state ./target`. See more [here](https://docs.getdbt.com/reference/node-selection/methods#the-result-method)
+    - This should be added as part of the DAG, see more [here](https://docs.getdbt.com/blog/dbt-airflow-spiritual-alignment#rerunning-jobs-from-failure)
 
 # dbt vs DLT
 | Function               | dbt | DLT |
