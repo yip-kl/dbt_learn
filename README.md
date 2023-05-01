@@ -11,7 +11,8 @@
 - It appears dbt can only take the location defined in `profiles.yml` as the query location. Setting under `dbt_project.yml` has no effect
 - A potential workaround is to create another profile file, then refer to this profile file using the `--profiles-dir` option when run
 ## Re-run from point of failure
-`dbt build --select 1+result:fail+ --defer --state ./target`. See more [here](https://docs.getdbt.com/reference/node-selection/methods#the-result-method)
+- Rerun models associated with failed tests with this command `dbt build --select 1+result:fail+ --defer --state ./target`. See more [here](https://docs.getdbt.com/reference/node-selection/methods#the-result-method)
+- This should be added as part of the DAG, see more [here](https://docs.getdbt.com/blog/dbt-airflow-spiritual-alignment#rerunning-jobs-from-failure)
 
 # Things to learn
 - Productivity https://github.com/innoverio/vscode-dbt-power-user/issues/402
