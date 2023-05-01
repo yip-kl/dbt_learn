@@ -10,9 +10,12 @@
 ## Multi-location query
 - It appears dbt can only take the location defined in `profiles.yml` as the query location. Setting under `dbt_project.yml` has no effect
 - A potential workaround is to create another profile file, then refer to this profile file using the `--profiles-dir` option when run
+## Re-run from point of failure
+`dbt build --select 1+result:fail+ --defer --state ./target`. See more [here](https://docs.getdbt.com/reference/node-selection/methods#the-result-method)
 
 # Things to learn
 - Productivity https://github.com/innoverio/vscode-dbt-power-user/issues/402
+- Observability: breakdown each data model and log the result to BQ
 - Github hooks e.g. https://github.com/dbt-labs/dbt-project-evaluator and others
 - Trigger dbt core via Airflow K8s
 
