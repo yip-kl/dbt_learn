@@ -1,0 +1,13 @@
+dbt_bq_sample:
+  outputs:
+    dev:
+      dataset: dev
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: US
+      method: oauth
+      priority: interactive
+      project: adroit-hall-301111
+      threads: 2
+      type: bigquery
+  target: dev

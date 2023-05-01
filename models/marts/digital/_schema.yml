@@ -1,0 +1,11 @@
+
+version: 2
+
+models:
+  - name: fct_ga4_agg
+    description: "A starter dbt model"
+    columns:
+      - name: count
+        description: "Event count"
+        tests:
+          - not_null

@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: ga4
+    database: adroit-hall-301111  
+    schema: analytics_235753993  
+    tables:
+      - name: events
+        identifier: "events_*"
