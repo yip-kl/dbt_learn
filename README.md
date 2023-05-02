@@ -2,9 +2,9 @@
 ## Project initialization
 1. Create venv
 2. Activate the venv and install dbt-bigquery
-3. Run dbt init {dbt project name} --profiles-dir {an existing folder to store the profiles.yml}. A folder will be created for your project
+3. Run `dbt init {dbt project name} --profiles-dir {an existing folder to store the profiles.yml}`. A folder will be created for your project
 4. Move the profiles.yml to the folder created in #3
-5. cd to the project, and dbt debug to make sure everything works fine
+5. cd to the project, and run `dbt debug` to make sure everything works fine
 ## Target dataset
 - If schema is defined in the `model` section of `dbt_project.yml`, the schema defined in `profiles.yml` will be concatenated to those defined in `dbt_project.yml`. In our case the output dataset are called "dev_dbt_marts" and "dev_dbt_staging"
 ## Multi-location query
