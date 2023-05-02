@@ -12,7 +12,7 @@
 - A potential workaround is to create another profile file, then refer to this profile file using the `--profiles-dir` option when run
 ## Serverless/Dedicated interactions
 This is for using Serverless SQL Pool as data source, then run transformation using Dedicated SQL Pool and store the data there, thus avoiding the need to load data into Dedicated SQL Pool in the first place
-- **Azure Synapse**: Won't work, because dbt-synapse plugin is for Dedicated SQL pool only, you can't connect to Dedicated SQL Pool to query data in Serverless SQL Pool 
+- **Azure Synapse**: Won't work, because dbt-synapse plugin is for Dedicated SQL pool only, you can't connect to Dedicated SQL Pool to query data in Serverless SQL Pool. Also tried creating External Table in Dedicated SQL Pool first, then materialize the data as Table, but this error occured `[Microsoft][ODBC Driver 18 for SQL Server][SQL Server]External file access failed due to internal error: 'Error occurred while accessing HDFS: Java exception raised on call to HdfsBridge_Connect. Java exception message:\r\nConfiguration property {container}.dfs.core.windows.net not found.' (105019) (SQLExecDirectW)")`
 
 # Things to learn
 - Productivity https://github.com/innoverio/vscode-dbt-power-user/issues/402
