@@ -1,7 +1,7 @@
 # General knowledge
 ## Project initialization
 1. Create venv
-2. Activate the venv and install dbt-bigquery
+2. Activate the venv and install dbt-{adapter}. The adapter should support the corresponding dbt version, otherwise downgrade dbt-core
 3. Run `dbt init {dbt project name} --profiles-dir {an existing folder to store the profiles.yml}`. A folder will be created for your project
 4. Move the profiles.yml to the folder created in #3
 5. cd to the project, and run `dbt debug` to make sure everything works fine
