@@ -35,8 +35,9 @@
 | Function               | dbt | DLT |
 |------------------------|-----|-----|
 | Scope       | - ETL: Transform only<br />- Output: The whole DW except for load, including Views, Tables, one-off queries| - ETL: Load and transform<br />- Output: Tables only|
-| Language       | SQL + Jinja to allow loops and parameterization. Python is newly supported | Python and SQL  |
-| Incremental handling       | Use `incremental` materialization, and define `unique_key` and cutoff time for new data | DLT tables are essentially materialized views |
+| Language       | SQL + Jinja to allow loops and parameterization, Python is newly supported | Python and SQL, but they cannot be run under the same notebook  |
+| Target       | All supported data warehouses | Databricks / Serverless variants e.g. Synpase Serverless SQL pool only  |
+| Incremental handling       | Use `incremental` materialization, and define `unique_key` and cutoff time for new data. Can also support full refresh via `dbt run --full-refresh` | DLT tables are essentially materialized views |
 | SCD support       | Yes via `snapshots` | Yes via `apply changes`  |
 | Documentation      |- Lineage: Auto-generated <br />- Description: Provided in .yml file, can support parameterization<br />- Target: Source and Output<br />- Maintenance: Need to run `dbt docs generate`, and require server setup|- Lineage: Auto-generated<br />- Description: Provided in `COMMENT`, no parameterization<br />- Target: Source (if created in the DLT pipeline) and Output<br />- Maintenance: Auto-refresh and self-hosted|
 | Development       |- Mode: Can run all/single SQL/anything upstream/downstream<br />- Environment and output destination: Managed using `profiles.yml` (for environment) and `dbt_project.yml` (for datasets) giving more flexibility | - Mode: Run all<br />- Environment: Defined in the pipeline setting, can only define one single schema, see [here](https://learn.microsoft.com/en-us/azure/databricks/delta-live-tables/updates#--development-and-production-modes)|
