@@ -16,14 +16,14 @@
 - dbt packages
     - [dbt-external-tables](https://github.com/dbt-labs/dbt-external-tables): With this one can create external tables in data warehouse e.g. external tables in Dedicated SQL Pool with source from ADLS. However, it appears full schema need to be defined even for self-described formats like Parquet
 ## Authentication
-- **Azure Synapse**
-    1. Create App Registration, and make sure the service principal has `Storage Blob Data Contributor` access to the container concerned
-    2. Grant the service principal access to the SQL Pool
+**Azure Synapse**
+1. Create App Registration, and make sure the service principal has `Storage Blob Data Contributor` access to the container concerned
+2. Grant the service principal access to the SQL Pool
     ```
      create user [service_principal_name] from external PROVIDER
      exec sp_addrolemember 'db_owner', [service_principal_name]
     ```
-    3. In dbt project's `profiles.yml`, set up the `authentication` flag = ServicePrincipal with associated configurations. Refer to [here](https://docs.getdbt.com/reference/warehouse-setups/mssql-setup#azure-active-directory-authentication-aad) for more details
+3. In dbt project's `profiles.yml`, set up the `authentication` flag = ServicePrincipal with associated configurations. Refer to [here](https://docs.getdbt.com/reference/warehouse-setups/mssql-setup#azure-active-directory-authentication-aad) for more details
 
 # Things to learn
 - Observability: breakdown each data model and log the result to BQ
