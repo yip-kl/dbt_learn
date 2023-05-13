@@ -30,6 +30,7 @@
 - Github hooks e.g. https://github.com/dbt-labs/dbt-project-evaluator and others
 - Trigger dbt core via Airflow K8s
 - Secret management e.g. client secret in profiles.yml
+- databricks synapse
 
 # Best practice
 - Data freshness and loaded time tracing
