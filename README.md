@@ -10,9 +10,11 @@
 ## Multi-location query
 - It appears dbt can only take the location defined in `profiles.yml` as the query location. Setting under `dbt_project.yml` has no effect
 - A potential workaround is to create another profile file, then refer to this profile file using the `--profiles-dir` option when run
-## External tables
-- Levearging [dbt-external-tables](https://github.com/dbt-labs/dbt-external-tables) one can create external tables in data warehouse e.g. external tables in Dedicated SQL Pool with source from ADLS
-- However, it appears full schema need to be defined even for self-described formats like Parquet
+## Must install
+- VS Code extensions
+    - dbt Power User / Osmosis: dbt Cloud like development experience
+- dbt packages
+    - [dbt-external-tables](https://github.com/dbt-labs/dbt-external-tables): With this one can create external tables in data warehouse e.g. external tables in Dedicated SQL Pool with source from ADLS. However, it appears full schema need to be defined even for self-described formats like Parquet
 ## Authentication
 - Azure Synapse
     1. Create App Registration, and make sure the service principal has `Storage Blob Data Contributor` access to the container concerned
@@ -24,7 +26,6 @@
     3. In dbt project's `profiles.yml`, set up the `authentication` flag = ServicePrincipal
 
 # Things to learn
-- Productivity https://github.com/innoverio/vscode-dbt-power-user/issues/402
 - Observability: breakdown each data model and log the result to BQ
 - Github hooks e.g. https://github.com/dbt-labs/dbt-project-evaluator and others
 - Trigger dbt core via Airflow K8s
