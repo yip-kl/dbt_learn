@@ -23,14 +23,29 @@
      create user [service_principal_name] from external PROVIDER
      exec sp_addrolemember 'db_owner', [service_principal_name]
     ```
-3. In dbt project's `profiles.yml`, set up the `authentication` flag = ServicePrincipal with associated configurations. Refer to [here](https://docs.getdbt.com/reference/warehouse-setups/mssql-setup#azure-active-directory-authentication-aad) for more details
+3. In dbt project's `profiles.yml`, set up the `authentication` flag = ServicePrincipal with associated configurations, then test locally with `dbt debug`. Refer to [here](https://docs.getdbt.com/reference/warehouse-setups/mssql-setup#azure-active-directory-authentication-aad) for more details
+4. dbt runs can be scheduled with Databricks, and like what we do locally we need to install Microsoft ODBC driver:
+    - Download the necessary files to somewhere like below
+        ```
+        %sh
+        sudo curl -k https://packages.microsoft.com/keys/microsoft.asc > /dbfs/FileStore/odbc_install/microsoft.asc 
+        sudo curl -k https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /dbfs/FileStore/odbc_install/prod.list
+        ```
+    - Create a start up script as such. This can be replaced to Workspace per Databricks' [recommendation](https://learn.microsoft.com/en-us/azure/databricks/clusters/init-scripts#configure-a-cluster-scoped-init-script-using-the-ui)
+        ```
+        #!/bin/bash
+        sudo apt-key add /dbfs/FileStore/odbc_install/microsoft.asc
+        sudo cp -f /dbfs/FileStore/odbc_install/prod.list /etc/apt/sources.list.d/mssql-release.list
+        sudo apt-get update
+        sudo ACCEPT_EULA=Y apt-get install msodbcsql18
+        ```
+    - Have the dbt CLI cluster in Job config to refer to this start up script
 
 # Things to learn
 - Observability: breakdown each data model and log the result to BQ
 - Github hooks e.g. https://github.com/dbt-labs/dbt-project-evaluator and others
 - Trigger dbt core via Airflow K8s
 - Secret management e.g. client secret in profiles.yml
-- databricks synapse
 
 # Best practice
 - Data freshness and loaded time tracing
