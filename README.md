@@ -10,6 +10,21 @@
 ## Multi-location query
 - It appears dbt can only take the location defined in `profiles.yml` as the query location. Setting under `dbt_project.yml` has no effect
 - A potential workaround is to create another profile file, then refer to this profile file using the `--profiles-dir` option when run
+## State backend
+dbt stores state after runs, but natively it does not provide a way to persist it on cloud storage like what Terraform does. However, this is critical for a number of reasons:
+- Allow stateful runs and Slim CI to run failed models, or models that have been modified
+- Providing data for observability
+
+**Databricks**
+- Natively it does not support stateful runs (see [here](https://github.com/databricks/dbt-databricks/blob/main/docs/databricks-workflows.md#retrieve-dbt-artifacts-using-the-jobs-api)), but we can work around this by storing the artifact and calling them by structuring the Workflow as below. IMPORTANT NOTE: directly using mount path for the state won't work, somehow it has to be loaded to the cluster first
+    1. Define environment variables for the dbt CLI cluster, for example:
+    ```
+    DBT_ARTIFACT_MOUNT_PATH=/mnt/dbt_state/target
+    DBT_ARTIFACT_STATE_PATH=/tmp/dbt_state/target
+    ```
+    2. Download artifact to the cluster, refer to `_other_code/databricks_stateful_runs/download_artifact.ipynb`
+    3. Run dbt with `dbt run --select state:xxx`
+    4. Upload the artifact of the current run to ADLS, refer to `_other_code/databricks_stateful_runs/upload_artifact.ipynb`
 ## Must install
 - VS Code extensions
     - dbt Power User / Osmosis: dbt Cloud like development experience
@@ -43,7 +58,6 @@
 
 # Things to learn
 - Observability: breakdown each data model and log the result to BQ
-- Reruns
 - Github hooks e.g. https://github.com/dbt-labs/dbt-project-evaluator and others
 - Trigger dbt core via Airflow K8s
 - Secret management e.g. client secret in profiles.yml
