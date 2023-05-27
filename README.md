@@ -43,6 +43,7 @@
 
 # Things to learn
 - Observability: breakdown each data model and log the result to BQ
+- Reruns
 - Github hooks e.g. https://github.com/dbt-labs/dbt-project-evaluator and others
 - Trigger dbt core via Airflow K8s
 - Secret management e.g. client secret in profiles.yml
@@ -51,7 +52,7 @@
 - Data freshness and loaded time tracing
     - Add _etl_loaded_at timestamp to the tables, so that dbt can produce warning/error if necessary via `source freshness`
 - Testing
-    1. `dbt build --store-failures` which runs `dbt run` and `dbt test` iteratively for each model.
+    1. `dbt build --store-failures` which runs `dbt run` and `dbt test` iteratively for each model, and stores failure to designated schema/dataset via [this](https://docs.getdbt.com/reference/resource-configs/schema#tests)
     2. Define the schema to store the failure results. Afterwards you can find the result of the failed tests in database
     3. Define severity (warn/error) of the tests
 - Project structure
