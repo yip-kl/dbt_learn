@@ -24,7 +24,7 @@
      exec sp_addrolemember 'db_owner', [service_principal_name]
     ```
 3. In dbt project's `profiles.yml`, set up the `authentication` flag = ServicePrincipal with associated configurations, then test locally with `dbt debug`. Refer to [here](https://docs.getdbt.com/reference/warehouse-setups/mssql-setup#azure-active-directory-authentication-aad) for more details
-4. dbt runs can be scheduled with Databricks, and like what we do locally we need to install Microsoft ODBC driver:
+4. dbt runs can be scheduled with Databricks, and like what we do locally we need to install Microsoft ODBC driver into the dbt CLI cluster:
     - Download the necessary files to somewhere like below
         ```
         %sh
