@@ -48,7 +48,9 @@
         - dbt Power User / Osmosis: dbt Cloud like development experience
     - dbt packages
         - [dbt-external-tables](https://github.com/dbt-labs/dbt-external-tables): With this one can create external tables in data warehouse e.g. external tables in Dedicated SQL Pool with source from ADLS. However, it appears full schema need to be defined even for self-described formats like Parquet
-        - [elementary](https://www.elementary-data.com/): Add observability e.g. model run duration by parsing artifacts
+        - [elementary](https://www.elementary-data.com/): Add observability e.g. model run duration by parsing artifacts, does not seem to support Synapse though
+        - [dbt_utils](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/): General macros library
+        - [tsql_utils](https://hub.getdbt.com/dbt-msft/tsql_utils/latest/): Necessary for Synapse
 - **Data freshness and loaded time tracing**
     - Add _etl_loaded_at timestamp to the tables, so that dbt can produce warning/error if necessary via `source freshness`
 - **Testing**
