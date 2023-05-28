@@ -10,26 +10,6 @@
 ## Multi-location query
 - It appears dbt can only take the location defined in `profiles.yml` as the query location. Setting under `dbt_project.yml` has no effect
 - A potential workaround is to create another profile file, then refer to this profile file using the `--profiles-dir` option when run
-## State backend
-dbt stores state after runs, but natively it does not provide a way to persist it on cloud storage like what Terraform does. However, this is critical for a number of reasons:
-- Allow stateful runs and Slim CI to run failed models, or models that have been modified
-- Providing data for observability
-
-**Databricks**
-- Natively it does not support stateful runs (see [here](https://github.com/databricks/dbt-databricks/blob/main/docs/databricks-workflows.md#retrieve-dbt-artifacts-using-the-jobs-api)), but we can work around this by storing the artifact and calling them by structuring the Workflow as below. IMPORTANT NOTE: directly using mount path for the state won't work, somehow it has to be loaded to the cluster first
-    1. Define environment variables for the dbt CLI cluster, for example:
-    ```
-    DBT_ARTIFACT_MOUNT_PATH=/mnt/dbt_state/target
-    DBT_ARTIFACT_STATE_PATH=/tmp/dbt_state/target
-    ```
-    2. Download artifact to the cluster, refer to `_other_code/databricks_stateful_runs/download_artifact.ipynb`
-    3. Run dbt with `dbt run --select state:xxx`
-    4. Upload the artifact of the current run to ADLS, refer to `_other_code/databricks_stateful_runs/upload_artifact.ipynb`
-## Must install
-- VS Code extensions
-    - dbt Power User / Osmosis: dbt Cloud like development experience
-- dbt packages
-    - [dbt-external-tables](https://github.com/dbt-labs/dbt-external-tables): With this one can create external tables in data warehouse e.g. external tables in Dedicated SQL Pool with source from ADLS. However, it appears full schema need to be defined even for self-described formats like Parquet
 ## Authentication
 **Azure Synapse**
 1. Create App Registration, and make sure the service principal has `Storage Blob Data Contributor` access to the container concerned
@@ -63,18 +43,30 @@ dbt stores state after runs, but natively it does not provide a way to persist i
 - Secret management e.g. client secret in profiles.yml
 
 # Best practice
-- Data freshness and loaded time tracing
+- **Must install**
+    - VS Code extensions
+        - dbt Power User / Osmosis: dbt Cloud like development experience
+    - dbt packages
+        - [dbt-external-tables](https://github.com/dbt-labs/dbt-external-tables): With this one can create external tables in data warehouse e.g. external tables in Dedicated SQL Pool with source from ADLS. However, it appears full schema need to be defined even for self-described formats like Parquet
+        - [elementary](https://www.elementary-data.com/): Add observability e.g. model run duration by parsing artifacts
+- **Data freshness and loaded time tracing**
     - Add _etl_loaded_at timestamp to the tables, so that dbt can produce warning/error if necessary via `source freshness`
-- Testing
+- **Testing**
     1. `dbt build --store-failures` which runs `dbt run` and `dbt test` iteratively for each model, and stores failure to designated schema/dataset via [this](https://docs.getdbt.com/reference/resource-configs/schema#tests)
     2. Define the schema to store the failure results. Afterwards you can find the result of the failed tests in database
     3. Define severity (warn/error) of the tests
-- Project structure
+- **Project structure**
     - See [here](https://docs.getdbt.com/guides/best-practices/how-we-structure/1-guide-overview)
     - By default dbt materializes as Views, default materialization for different types of models can be defined in `dbt_project.yml`. Similarly `schema` can be defined to output the results to different locations. See [here](https://docs.getdbt.com/reference/model-configs)
-- Re-run from point of failure
-    - Rerun models associated with failed tests with this command `dbt build --select 1+result:fail+ --defer --state ./target`. See more [here](https://docs.getdbt.com/reference/node-selection/methods#the-result-method)
-    - This should be added as part of the DAG, see more [here](https://docs.getdbt.com/blog/dbt-airflow-spiritual-alignment#rerunning-jobs-from-failure)
+- **State backend on cloud**
+dbt stores state after runs, but natively it does not provide a way to persist it on cloud storage like what Terraform does. However, this is critical for a number of reasons:
+    - Allow stateful runs and Slim CI to run failed models, or models that have been modified e.g.
+    ```
+    `dbt build --select 1+result:fail+ --defer --state ./target`
+    ```
+    - Providing data for observability
+
+    
 
 # dbt vs DLT
 | Function               | dbt | DLT |

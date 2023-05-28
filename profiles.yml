@@ -11,3 +11,12 @@ dbt_bq_sample:
       threads: 2
       type: bigquery
   target: dev
+
+elementary:
+  outputs:
+    default:
+      type: "bigquery"
+      method: oauth
+      project: "adroit-hall-301111"
+      dataset: "dev_elementary"
+      threads: 2
