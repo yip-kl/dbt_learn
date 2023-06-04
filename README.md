@@ -37,10 +37,10 @@
     - Have the dbt CLI cluster in Job config to refer to this start up script
 
 # Things to learn
-- Observability: breakdown each data model and log the result to BQ
+- Secret management e.g. client secret in profiles.yml
 - Github hooks e.g. https://github.com/dbt-labs/dbt-project-evaluator and others
 - Trigger dbt core via Airflow K8s
-- Secret management e.g. client secret in profiles.yml
+
 
 # Best practice
 - **Must install**
@@ -48,7 +48,7 @@
         - dbt Power User / Osmosis: dbt Cloud like development experience
     - dbt packages
         - [dbt-external-tables](https://github.com/dbt-labs/dbt-external-tables): With this one can create external tables in data warehouse e.g. external tables in Dedicated SQL Pool with source from ADLS. However, it appears full schema need to be defined even for self-described formats like Parquet
-        - [elementary](https://www.elementary-data.com/): Add observability e.g. model run duration by parsing artifacts, does not seem to support Synapse though
+        - [elementary](https://www.elementary-data.com/): Add observability e.g. model run duration by parsing artifacts, does not seem to support Synapse though. Neither does `dbt Artifacts`
         - [dbt_utils](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/): General macros library
         - [tsql_utils](https://hub.getdbt.com/dbt-msft/tsql_utils/latest/): Necessary for Synapse
 - **Data freshness and loaded time tracing**
@@ -61,7 +61,7 @@
     - See [here](https://docs.getdbt.com/guides/best-practices/how-we-structure/1-guide-overview)
     - By default dbt materializes as Views, default materialization for different types of models can be defined in `dbt_project.yml`. Similarly `schema` can be defined to output the results to different locations. See [here](https://docs.getdbt.com/reference/model-configs)
 - **State backend on cloud**
-dbt stores state after runs, but natively it does not provide a way to persist it on cloud storage like what Terraform does. However, this is critical for a number of reasons:
+dbt stores state after runs, but natively it does not provide a way to persist it on cloud storage like what Terraform does. However, this is critical for the following reasons. An example of how to work around it in Databricks is stated under `_other_code/databricks_stateful_runs/`
     - Allow stateful runs and Slim CI to run failed models, or models that have been modified e.g.
     ```
     `dbt build --select 1+result:fail+ --defer --state ./target`

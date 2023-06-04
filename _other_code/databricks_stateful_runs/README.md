@@ -7,6 +7,6 @@ DBT_ARTIFACT_MOUNT_PATH=/mnt/dbt_state
 DBT_ARTIFACT_LOCAL_PATH=/tmp/dbt_state
 DBT_ARTIFACT_STATE_PATH=/tmp/dbt_state/target
 ```
-2. Download artifact to the cluster, refer to `_other_code/databricks_stateful_runs/download_artifact.ipynb`
+2. Download artifact to the cluster, refer to `download_artifact.ipynb`
 3. Run dbt with `dbt run --select state:xxx`
-4. Upload the artifact of the current run to ADLS, refer to `_other_code/databricks_stateful_runs/upload_artifact.ipynb`
+4. Upload the artifact of the current run to ADLS, refer to `upload_artifact.ipynb`
